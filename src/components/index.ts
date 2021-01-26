@@ -319,3 +319,5 @@ export {VideoThumbnail} from './VideoThumbnail';
 
 export {VisuallyHidden} from './VisuallyHidden';
 export type {VisuallyHiddenProps} from './VisuallyHidden';
+
+export {ActionRefsTrackerProvider} from './ActionRefsTrackerProvider';
