@@ -4,7 +4,6 @@ import 'focus-visible/dist/focus-visible';
 import type {ThemeConfig} from '../../utilities/theme';
 import {ThemeProvider} from '../ThemeProvider';
 import {MediaQueryProvider} from '../MediaQueryProvider';
-import {ActionRefsTrackerProvider} from '../ActionRefsTrackerProvider';
 import {FocusManager} from '../FocusManager';
 import {PortalsManager} from '../PortalsManager';
 import {I18n, I18nContext} from '../../utilities/i18n';
@@ -100,13 +99,11 @@ export class AppProvider extends Component<AppProviderProps, State> {
               <UniqueIdFactoryContext.Provider value={this.uniqueIdFactory}>
                 <LinkContext.Provider value={link}>
                   <ThemeProvider theme={theme}>
-                    <ActionRefsTrackerProvider>
-                      <MediaQueryProvider>
-                        <PortalsManager>
-                          <FocusManager>{children}</FocusManager>
-                        </PortalsManager>
-                      </MediaQueryProvider>
-                    </ActionRefsTrackerProvider>
+                    <MediaQueryProvider>
+                      <PortalsManager>
+                        <FocusManager>{children}</FocusManager>
+                      </PortalsManager>
+                    </MediaQueryProvider>
                   </ThemeProvider>
                 </LinkContext.Provider>
               </UniqueIdFactoryContext.Provider>

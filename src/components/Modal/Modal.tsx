@@ -1,8 +1,8 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback, useRef, useContext} from 'react';
 import {TransitionGroup} from 'react-transition-group';
 
 import {focusFirstFocusableNode} from '../../utilities/focus';
-import {useActionRefsTrackerContext} from '../../utilities/action-refs-tracker';
+import {ActionRefsTrackerContext} from '../../utilities/action-refs-tracker';
 import {useUniqueId} from '../../utilities/unique-id/hooks';
 import {useI18n} from '../../utilities/i18n';
 import {WithinContentContext} from '../../utilities/within-content-context';
@@ -57,7 +57,7 @@ export interface ModalProps extends FooterProps {
   /** The element or the RefObject that activates the Modal */
   activator?: React.RefObject<HTMLElement> | React.ReactElement;
   /** id matching Action object */
-  id?: string;
+  actionId?: string;
 }
 
 export const Modal: React.FunctionComponent<ModalProps> & {
@@ -82,17 +82,14 @@ export const Modal: React.FunctionComponent<ModalProps> & {
   onClose,
   onIFrameLoad,
   onTransitionEnd,
-  id,
+  actionId,
 }: ModalProps) {
   const [iframeHeight, setIframeHeight] = useState(IFRAME_LOADING_HEIGHT);
 
   const headerId = useUniqueId('modal-header');
   const activatorRef = useRef<HTMLDivElement>(null);
 
-  const actionRefsTracker = useActionRefsTrackerContext();
-
-  console.log('actionClickTracker MODAL', actionRefsTracker);
-
+  const actionRefsTracker = useContext(ActionRefsTrackerContext);
   const i18n = useI18n();
   const iframeTitle = i18n.translate('Polaris.Modal.iFrameTitle');
 
@@ -107,7 +104,7 @@ export const Modal: React.FunctionComponent<ModalProps> & {
 
   const getActivatorElement = useCallback(() => {
     const filterItem = actionRefsTracker.filter(
-      (item) => item.id === id && item.actionRef?.current,
+      (item) => item.id === actionId && item.actionRef?.current,
     );
 
     if (filterItem.length > 0) {
@@ -120,14 +117,12 @@ export const Modal: React.FunctionComponent<ModalProps> & {
 
       return activatorElement;
     }
-  }, [actionRefsTracker, activator, id]);
+  }, [actionRefsTracker, activator, actionId]);
 
   const handleExited = useCallback(() => {
     setIframeHeight(IFRAME_LOADING_HEIGHT);
 
     const activatorElement = getActivatorElement();
-
-    console.log('activatorElement MODAL', activatorElement);
 
     if (activatorElement) {
       requestAnimationFrame(() => focusFirstFocusableNode(activatorElement));

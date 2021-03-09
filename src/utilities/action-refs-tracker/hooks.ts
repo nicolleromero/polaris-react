@@ -30,17 +30,5 @@ export function useSetActionRefs({
     if (currentId && currentRef && currentRef.current !== null) {
       filterRefs();
     }
-
-    console.log(refsTracker, 'useSetActionRefs');
   }, [currentRef, currentId, filterRefs, refsTracker]);
-}
-
-export function useActionRefsTrackerContext() {
-  const context = useContext(ActionRefsTrackerContext);
-
-  if (!context) {
-    throw new Error('No action refs tracker found.');
-  }
-
-  return context;
 }
