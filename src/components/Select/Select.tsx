@@ -65,10 +65,12 @@ export interface SelectProps {
   error?: Error | boolean;
   /** Callback when selection is changed */
   onChange?(selected: string, id: string): void;
-  /** Callback when select is focussed */
+  /** Callback when select is focused */
   onFocus?(): void;
   /** Callback when focus is removed */
   onBlur?(): void;
+  /** Visual required indicator */
+  requiredIndicator?: boolean;
 }
 
 const PLACEHOLDER_VALUE = '';
@@ -89,6 +91,7 @@ export function Select({
   onChange,
   onFocus,
   onBlur,
+  requiredIndicator,
 }: SelectProps) {
   const id = useUniqueId('Select', idProp);
   const labelHidden = labelInline ? true : labelHiddenProp;
@@ -149,10 +152,21 @@ export function Select({
 
   const optionsMarkup = normalizedOptions.map(renderOption);
 
+  let labelMarkup = label;
+
+  if (requiredIndicator) {
+    labelMarkup = (
+      <span
+      className={styles.requiredIndicator}>
+        {label}
+      </span>
+    );
+  }
+
   return (
     <Labelled
       id={id}
-      label={label}
+      label={labelMarkup}
       error={error}
       action={labelAction}
       labelHidden={labelHidden}
@@ -172,6 +186,7 @@ export function Select({
           aria-describedby={
             describedBy.length ? describedBy.join(' ') : undefined
           }
+          aria-required={requiredIndicator}
         >
           {optionsMarkup}
         </select>

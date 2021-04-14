@@ -150,6 +150,12 @@ $stacking-order: (
   }
 }
 
+.requiredIndicator:after {
+  content: "*";
+  color: red;
+  margin-left: 4px;
+}
+
 @media (-ms-high-contrast: active) {
   .Content {
     color: ms-high-contrast-color('text');
